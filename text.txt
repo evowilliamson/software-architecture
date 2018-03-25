@@ -1,0 +1,591 @@
+\documentclass[a4paper]{article}
+\usepackage{geometry}
+ \geometry{
+  left=20mm,
+ right=20mm,
+ }
+\usepackage[utf8x]{inputenc}
+\usepackage[dutch]{babel}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{kantlipsum}
+\usepackage{longtable}
+\usepackage{url}
+\textwidth = 550pt
+\textheight = 680pt
+\usepackage{array,etoolbox}
+\preto\tabular{\setcounter{magicrownumbers}{0}}
+\newcounter{magicrownumbers}
+\newcommand\rownumber{\stepcounter{magicrownumbers}\arabic{magicrownumbers}}
+
+%glosseray
+\usepackage{glossaries}
+\makeglossaries
+%gebruik gls{<entry>} voor verwijzen naar een item in de glossary
+\newglossaryentry{concern}
+{
+  name=concern,
+  plural=concerns,
+  description={is een wens of behoefte van een stakeholder. Concerns worden omgezet naar requirements. }
+}
+
+\newglossaryentry{groeneWielen}
+{
+  name=GroeneWielen,  
+  description={Een bestaand concept waarmee de deelnemers een voertuig kunnen reserveren en gebruiken. In dit geval moet de deelnemer zelf naar de auto toe gaan om deze te gebruiken. Dit product is niet gebruiksvriendelijk en is duur.  }
+}
+
+\newglossaryentry{stakeholder}
+{
+  name=stakeholder,
+  plural=stakeholders,
+  description={Een stakeholder is iedereen met een legitieme interesse in de bouw van het software systeem. Stakeholders kunnen onder andere eindgebruikers, ontwikkelaars, project management en beheerders zijn. }
+}
+
+\newglossaryentry{SystemBoundaries}
+{
+  name=system boundaries,
+  plural=system boundaries,
+  description={De grens tussen het systeem dat gedurende dit project ontwikkelt wordt en de buitenwereld waarmee het systeem communiceert.}
+}
+%einde glossary
+
+\newcommand{\todo}[1]{\textcolor{red}{[#1]}}
+\lhead{Open Universiteit}
+\chead{IM0203, Software architecture}
+\rhead{End report}
+
+\begin{document}
+\pagestyle{fancy}
+
+\title{Software architectuur document voor Call-a-Car}
+\author{}
+\maketitle
+
+\begin{table}
+\begin{tabular}{|l|l|}
+\hline
+	\emph{Project} & Call-a-Car \\
+	\emph{Author 1} & Marco Huijben \\
+	\emph{Student number} & 838316640\\
+	\emph{Author 2} & Ivo Willemsen\\
+	\emph{Student number} & 851926289\\
+	\emph{Date} & 21-3-2018\\
+	\emph{Version} & 0.2\\	
+\hline
+\end{tabular}
+\caption{Metadata}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|l|l|l|}
+\hline
+	\emph{Version} & \emph{Date} & \emph{Change}\\ \hline
+    \ 0.1 & 4-3-2018 & Initial version\\ \hline
+    \ 0.2 & 21-3-2018 & Architectuur visie en scenario's\\ \hline
+\end{tabular}
+\caption{Version history}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|l|l|}
+\hline
+	\emph{name} & \emph{work done}\\ \hline
+\end{tabular}
+\caption{Division of work}
+\end{table}
+
+\tableofcontents
+
+\section{Introduction}
+%<Schrijf hier kort iets over de achtergrond van het project.>
+In de Automatiseringsgids deed de Minister van Verkeer uit de doeken dat ze graag een experiment wil uitvoeren met zelfrijdende auto's. Geïnspireerd door dit interview is opdrachtgever Alex Aanvoerder met het idee gekomen om een systeem te ontwikkelen dat klanten in staat stelt om op een efficiëntere manier om te gaan met het concept van autobezit. Hierbij kunnen klanten met één click in een app een zelfrijdende auto bestellen en betalen zij alleen voor de gereden kilometers. Om een groter maatschappelijk draagvlak te creëren, zijn er contacten gelegd met Bits For Freedom, die graag aan het project wil meewerken om privacy van klanten te showcasen. Vanuit de financiële hoek heeft een bank interesse om als sponsor op te treden en heeft een autofabrikant hun zelfrijdende elektrische auto's aangeboden. 
+
+\subsection{Context}
+%<Een beschrijving van het project op hoofdlijnen. Geef aan wat de bestaande situatie en omgeving is, en hoe het nieuwe software systeem hier in past. >
+Het project behelst de creatie van een systeem dat als doel heeft het flexibiliseren van het concept van autobezit m.b.v. het het gebruik van zelfrijdende auto's. Het moet mensen aanzetten om een auto te zien als een gebruiksvoorwerp en niet direct als een vorm van bezit. Indien men een auto voor een bepaalde tijd nodig heeft, kan men m.b.v. het systeem een auto configureren, een afleveradres en -tijdstip opgeven. De zelfrijdende auto zal vervolgens de klant ophalen en brengen naar de plek van bestemming, waarbij de klant alleen zal betalen voor de gereden kilometers. Nadat de klant heeft betaald, zal de zelfrijdende auto terugrijden naar een publieke parkeergarage, waar de auto zal wachten op een verzoek van een volgende klant.\newline
+\newline
+Er bestaat reeds een dergelijk systeem, genaamd \gls{groeneWielen}, die mensen in staat stelt om op een flexibele manier op te gaan met autobezit, echter, deze oplossing is niet gebruikersvriendelijk en er zijn hoge kosten voor de klant mee gemoeid. Ook wordt bij deze oplossing geen gebruik gemaakt van zelfrijdende auto's. Het gebruikt van zelfrijdende auto's zal een kosten-reducerend effect tot gevolg hebben.\newline
+\newline
+Een andere doelgroep zijn mensen die graag de beschikking willen hebben over een tweede auto, maar deze auto maar sporadisch gebruiken. Voor hen zou het een mooie oplossing zijn, indien ze gebruik kunnen maken van een flexibele dienst zoals Call-a-Car.\newline
+
+\subsection{\gls{SystemBoundaries}}
+%<Geef hier aan wat wel en wat niet tot de verantwoordelijkheid van het systeem zal behoren. Gebruik er liefst een diagram bij>
+In figuur \ref{fig:boundaries} worden de grenzen van het te ontwikkelen systeem aangegeven. 
+
+\begin{figure}
+	\centering
+	\includegraphics{cac_context.png}
+    \caption{System boundaries, aangegeven door de gestippelde lijn}
+    \label{fig:boundaries}
+\end{figure}
+
+Het systeem CaC (Call-a-Car) bestaat uit de volgende onderdelen: 
+\begin{itemize}
+\item Het deelsysteem, ``CaC Services``. Dit deelsysteem is ``linking-pin`` van het systeem CaC. \item De mobiele app ``CaC-app`` voor de klanten die een auto willen bestellen. 
+\item Het ``Parking Facilities`` systeem. Dit systeem zal bestaan uit zowel fysieke (slagbomen, sensoren, etc..) als digitale onderdelen (software)
+\item Het ``CaC Admin`` Systeem. Dit deelsysteem zal de klant en de support engineers van Call-a-Car in staat stellen om overzichten op te vragen. Centraal worden alle gegevens opgeslagen in het deelsysteem ``Cac Services``, en het deelsysteem ``Cac Admin`` zal een aanvraag doen naar dit deelsysteem om te betreffende gegevens op te halen en te tonen in ``Cac Admin`` systeem. Ook geeft dit deelsysteem het management van CaC de mogelijkheid om rapporten te genereren      
+\end{itemize}
+
+De volgende deelsystemen spelen een rol in de communicatie met bovenstaande deelsystemen, maar vallen niet binnen de systeem boundaries van het te ontwikkelen systeem:
+\begin{itemize}
+	\item Het ``Auto Navigatie en Control Systeem`. Deze software zal door de leverancier worden ontwikkeld, waarbij Call-a-Car zal aangeven wat de interface moet zijn.
+	\item Het banksysteem.
+	\item Het deelsysteem ``Betaal App`` van de bank. De klant zal deze app gebruiken om maandelijkse betalingen uit te voeren
+\end{itemize}
+
+In het diagram zijn een aantal notities opgenomen die de architectuurpatronen aanduiden (AP) die in een later hoofdstuk zullen worden beschreven.
+
+\subsection{Goal of the document}
+%<Geef hier aan wat het doel is van het document, en geef een kort overzicht van wat gaat komen in de rest van het document.>
+Dit document heeft als doel inzicht te geven in de achtergronden van het project. Tevens wil dit document de stakeholders een indruk te geven wat hun positie in het project is en in welke manieren hun behoeften worden ingewilligd. De laatste doel is om de stakeholders duidelijk te maken welke architectuur voor dit systeem toegepast gaat worden.\\
+\\
+
+In hoofdstuk \ref{sec:stakeholders} worden de \glspl{stakeholder} van het systeem en hun concerns omtrent het systeem beschreven. Hieruit worden in hoofdstuk \ref{sec:requirements} de functionele en de niet-functionele requirements opgesteld. De constraints worden ook in dit hoofdstuk uiteengezet. Aan de hand van de requirements beschrijft hoofdstuk \ref{sec:architecture} vanuit verschillende perspectieven de architectuur van het systeem. Een aantal scenario's worden opgesteld in hoofdstuk \ref{sec:analysis}.
+De glossary, hoofdstuk \ref{sec:glossary}, bevat een lijst met verklaringen van belangrijke begrippen.
+
+\section{Stakeholders and their concerns}
+\label{sec:stakeholders}
+%<Schets wie de stakeholders zijn, en beschrijf hun concerns vanuit die stakeholders gezien, nog zonder ze in termen van requirements te schrijven. De vier eigenaar, gebruikers, ontwikkelaars en beheerders moeten in ieder geval aan bod komen. In veel gevallen is het aan te bevelen om onderverdelingen te maken van sommige van de groepen. Maak voor iedere groep zo precies mogelijk om wie het gaat voor dit specifieke software systeem.>
+%<Maak zelf een onderverdeling van dit hoofdstuk>
+De \glspl{stakeholder} voor het systeem zijn onder te verdelen in de volgende groepen:
+\begin{itemize}
+\item Ontwikkelorganisatie (\ref{sec:ontwikkelorganisatie})
+\item Ontwikkelaars (\ref{sec:ontwikkelaars})
+\item Gebruikers (\ref{sec:gebruikers})
+\item Opdrachtgevers (\ref{sec:opdrachtgevers})
+\item Beheerders (\ref{sec:beheerders})
+\item Overig (\ref{sec:overig})
+\end{itemize}
+Voor elke stakeholder wordt aangeven, indien bekend, wie zij zijn en welke relatie zij met het project hebben. Ook worden hun \glspl{concern} beschreven. 
+
+\todo{concern: flexibiliteit van het aantal beschikbare auto's, zelf bij voorkeur geen auto's aanschaffen. Conflict? Betalen voor de auto's? hoeveel gratis voertuigen levert de fabrikant?}
+
+\subsection{Stakeholder Ontwikkelorganisatie}
+\label{sec:ontwikkelorganisatie}
+Deze paragraaf beschrijft de stakeholders van de groep Ontwikkelorganisatie.
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam & Alex Aanvoerder \\
+ \hline Functie & Oprichter Call-a-Car \\ 
+ \hline Omschrijving & Hij is de initiatiefnemer van het project en eigenaar van het bedrijf Call-a-Car \\
+ \hline Concerns & 
+ 	\begin{itemize} 
+    	\item Budget van EURO 2.000.000, waarvan EURO 1.000.000 voor o.a. reclame en implementatie. Een deel van het budget is een buffer voor het derde jaar. Voor software ontwikkeling moet onder de EURO 1.000.000 blijven.
+    	\item Het project moet een werkbaar systeem als resultaat hebben en binnen twee jaar operationeel zijn.
+    	\item Er moet voorzichtig worden omgegaan met persoonlijke gegevens. Privacy is van groot belang.       
+        \item De gebruiker moet type en merk van voertuig kunnen selecteren. 
+        \item De kosten van een rit is afhankelijk van type voertuig en de gereden kilometers.
+        \item Het moet makkelijk werken dan GroeneWielen.
+        \item Het systeem moet zo gebouwd worden dat de scheiding tussen het betaalsysteem, de parkeergelegenheden en de rest van het systeem eenvoudig te maken is. Het betaalsysteem en het systeem voor de parkeergelegenheden worden t.z.t. verkocht aan de overheid. Via API, gemaakt tijdens dit project, kunnen deze systemen benaderd worden.
+        \item De gebruiker moet zijn historische gegevens kunnen inzien.
+        \item Service medewerkers kunnen de gegevens van de gebruiker alleen na toestemming inzien.
+        \item Andere (externe) systemen krijgen geen toegang tot de gebruikersdata, maar alleen aggregeerde data.
+        \item De gebruikers moeten in de toekomst hun eigen voertuigen aan het systeem kunnen toevoegen wanneer zij deze niet gebruiken. Hierdoor kunnen zij aan hun auto geld verdienen. Dit is geen onderdeel van de pilot.
+        \item De uitvaltijd moet minimaal zijn en het systeem moet schaalbaar zijn.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Alex Aanvoerder}
+\end{table}
+
+\subsection{Stakeholdergroep Ontwikkelaars}
+\label{sec:ontwikkelaars}
+Deze paragraaf beschrijft de stakeholders van de groep Ontwikkelaars.
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam & Berna Bouwer \\
+ \hline Functie & Software Architect \\ 
+ \hline Omschrijving & Zij is verantwoordelijk voor de softwarearchitectuur van het systeem.\\
+ \hline Concerns & 
+  	\begin{itemize} 
+    	\item Budget voor softwareontwikkeling is onder EURO 1.000.000.
+    	\item Het systeem moet uitbreidbaar zijn.
+        \item De beschikbaarheid moet 7*24 worden.
+        \item Het voertuig belt vijf minuten voor aankomst de klant op.
+        \item De betalingen moeten later alsnog gedaan kunnen worden, indien de bank een storing in het betaalsysteem heeft.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Berna Bouwer}
+\end{table}
+
+\subsection{Stakeholdergroep Gebruikers}
+\label{sec:gebruikers}
+Deze paragraaf beschrijft de stakeholders van de groep opdrachtgevers.
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam & Corinne Castelijn \\
+ \hline Functie & Klant \\ 
+ \hline Omschrijving & De klant bestelt een auto en gaat hiermee rijden. Zij gebruikt nu GroeneWielen en is hierover niet enthousiast.\\
+ \hline Concerns & 
+ 	\begin{itemize} 
+    	\item De auto moet makkelijk te regelen zijn. Dit moet makkelijker gaan dan bij GroeneWielen.
+    	\item Alleen betalen voor de kilometers die met de auto gereden worden.
+        \item De auto moet met de app geopend kunnen worden.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Minister van Verkeer}
+\end{table}
+
+\subsection{Stakeholdergroep Opdrachtgevers}
+\label{sec:opdrachtgevers}
+Deze paragraaf beschrijft de stakeholders van de groep opdrachtgevers.
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam &  Doris Dorknoper\\
+ \hline Functie & Representant Ministerie van Verkeer \\
+ \hline Omschrijving & Ministerie wil een experiment uitvoeren met zelfrijdende auto's\\
+ \hline Concerns & 
+ 	\begin{itemize} 
+    	\item Het ministerie wil een vrije markt creëren, zodat andere bedrijven in de toekomst ook hun diensten kunnen aanbieden. Het ministerie wil niet dat het gehelen systeem van parkeerfaciliteiten en het systeem dat door Call-a-Car gebouwd wordt, in handen komt van één partij.
+    	\item Het ministerie wil dat de parkeerfaciliteiten later worden verkocht aan een andere partij.
+        \item Het ministerie wil eigenaar worden van de standaard op basis welke de API zal worden gebouwd.
+        \item Het ministerie wil per week geaggregeerde informatie over de gereden kilometers. De kilometers voor het rijden naar en vanaf de parkeerplaatsen tellen hierbij niet mee.
+        \item Het ministerie wil per direct een melding over incidenten met de auto's. Dit geldt alleen als de auto zelfstandig rijdt en geen passagiers vervoert.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Doris Dorknoper}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam & Eduard Erfgeest\\
+ \hline Functie & Bank \\ 
+ \hline Omschrijving & De bank financiert een deel van het project in ruil voor een platform voor de betalingen\\
+ \hline Concerns & 
+ 	\begin{itemize} 
+    	\item Het systeem maakt gebruik van de betalingssysteem (pay-by-fingerprint) van de bank via de te downloaden app van de bank.
+        \item De gebruikers dienen of een rekening bij de bank te hebben of moeten hun credit card gegevens aanleveren. Tevens moeten zij de app van de bank installeren.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Bank}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam & Frederieke Vrijheid\\
+ \hline Functie & Bits of Freedom representant\\ 
+ \hline Omschrijving & Bits of freedom financiert een deel van het project en in ruil wil het de klantprivacy showcasen \\
+ \hline Concerns & 
+ 	\begin{itemize} 
+    	\item Bits of Freedom is geïnteresseerd in het ontwikkelen van een standaard waar iedereen die in te toekomst in aanraking komt met Call-a-Car zich aan zou moeten houden.
+    	\item Bits of Freedom wil dat persoonsgerelateerde data niet wordt gecommuniceerd met de parkeerfaciliteiten.
+        \item Bits of Freedom wil dat het publiek meer bewust wordt omtrent privacy.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Bits of Freedom}
+\end{table}
+
+\subsection{Stakeholder beheerders}
+\label{sec:beheerders}
+De onderstaande stakeholders zijn te kenmerken als beheerders van het systeem.
+
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+  \hline Organisatie & Call-a-Car \\
+ \hline Functie & Service medewerkers  \\ 
+ \hline Omschrijving & Deze medewerkers leveren overzichten, lossen problemen van klanten op en zijn aanspreekpunt voor derden\\
+ \hline Concerns &
+ 	\begin{itemize} 
+    	\item Kunnen bekijken van (historische) gegevens van gebruikers om deze te kunnen helpen bij problemen, parkeergelegenheden en auto's.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder Beheerders}
+\end{table}
+
+\subsection{Stakeholder overig}
+\label{sec:overig}
+Deze paragraaf beschrijft de overige stakeholders.
+
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Organisatie & Provincie Limburg \\
+ \hline Omschrijving & De provincie stelt de parkeerplaatsen te beschikking. \\
+ \hline Concerns & 
+ 	\begin{itemize} 
+    	\item De provincie stelt de parkeerplaatsen ter beschikking.
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder provincie Limburg}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{|p{2cm}|p{14cm}|}
+ \hline Naam & Autofabrikant \\
+  \hline Omschrijving & De autofabrikant is de leverancier van de zelfrijdende elektrische auto's en zal de noodzakelijk software voor de auto's leveren a.d.h.v. de specificaties die door Call-a-Car zullen worden opgesteld. \\
+ \hline Concerns &
+ 	\begin{itemize} 
+    	\item Indien het systeem is geïmplementeerd, wil de autofabrikant dat zijn auto's gebruikt gaan worden
+    \end{itemize}\\
+ \hline
+\end{tabular}
+\caption{Stakeholder provincie Limburg}
+\end{table}
+
+\section{Requirements}
+\label{sec:requirements}
+\subsection{Functional requirements}
+\label{subsec:functionalrequirements}
+De meeste functional requirements zijn eenvoudig af te leiden uit de concerns van de gebruiker en de opdrachtgever, die zeker ook als een gebruiker optreedt in de use-case beschrijving, omdat hij zich vaak verplaatst in de gedachte van de gebruiker van het systeem. Wij verwijzen dan ook graag naar de concerns om deze eenvoudige functional requirements af te leiden. Bijvoorbeeld, het is vrij duidelijk dat de gebruiker via een 1-click systeem een auto wil bestellen. Dit is een directe concern van de gebruiker. Deze concern is makkelijk te herleiden uit de use-case beschrijving. Echter, één van de requirements die hieraan ten grondslag ligt is de requirement dat het GPS systeem van de mobile telefoon van de gebruiker geactiveerd moet zijn, opdat de positie naar het deelsysteem ``CaC Services`` kan worden gezonden
+\newline
+\newline
+De functional requirements waar meer aandacht aan zal worden geschonken zijn essentiële requirements die te maken hebben met het doel van het systeem. Welke requirements kunnen worden onderscheiden die tot de ``core`` van het systeem zullen behoren ? Dit zijn vooral de requirements die te maken hebben met de communicatie tussen de verschillende deelsystemen die reeds zijn onderkend bij het bepalen van de system boundaries. \newline
+\newline
+Er zal eerst een proof-of-concept (POC) moeten worden uitgevoerd voor essentiële onderdelen van het systeem en vooral de communicatie tussen de verschillende deelsystemen. De requirements die op de volgende pagina worden genoemd zullen onderdeel zijn van de POC. De succes van het systeem zal afhankelijk zijn van deze requirements en er moet in vroegtijdig stadium duidelijkheid worden verschaft over de haalbaarheid van implementatie van deze requirements. De uitvoerbaarheid (feasibility) van de ingebruikneming van het systeem is dus afhankelijk van de mate waarin aan deze functional requirements kan worden voldaan.
+
+\begin{longtable}{|@{\makebox[1cm][c]{\rownumber\space}}|p{14cm}|} 
+\hline Het systeem van de auto moet in staat zijn om de positie van de auto door te geven aan het deelsysteem ``CaC Services``. Deze actie zal gebeuren op aanvraag van het deelsysteem ``CaC Services``. \\
+\hline Indien de gebruiker via het 1-click mechanisme een auto bestelt, zal de app de GPS-positie van de telefoon bepalen en deze positie samen met de gegevens van de klant naar het deelsysteem ``CaC Services``. versturen \\
+\hline Het deelsysteem ``CaC Services`` zal alleen een auto sturen naar het adres dat gelinkt is met de GPS-positie van de aanvraag indien de gegevens van de klant bekend zijn. \\
+\hline Het deelsysteem ``CaC Services`` moet in staat zijn om de GPS-posities en identifiers van alle beschikbare auto's op te vragen. Een beschikbare auto is een auto die op het moment van bevraging, geen klanten naar een bestemming brengt. Op basis van het kortste-afstand algoritme zal het deelsysteem ``CaC Services`` de meeste ideale auto selecteren.\\
+\hline Het deelsysteem ``CaC Services`` moet in staat zijn via de identifier van een beschikbare auto, deze auto de opdracht te geven om naar de GPS-positie van de klant te rijden. De informatie van de klant zal aan de software van de auto worden doorgegeven. Dit is belangrijk omdat de klant met de app de auto zal openmaken.\\
+\hline De app van de klant moet in staat zijn om via een 1-click mechanisme de auto open te maken. Indien de gebruiker deze actie uitvoert, wordt via het deelsysteem ``CaC Services`` de klantinformatie naar de software van de auto gestuurd zodat de software van de auto weet dat de auto geopend mag worden.\\
+\hline Indien het portier van de auto gesloten wordt en indien de sensor in de stoel detecteer dat iemand plaats heeft genomen in de auto, zal de software van de auto, het navigatieprogramma opstarten zodat de auto naar het betreffende adres zal rijden.\\
+\hline Indien de bestemming bereikt is, moet het software van de auto in staat zijn om de klant m.b.v. (audio)visuele features de klant op de hoogte te brengen van dit feit. \\
+\hline De software van de auto moet in staat zijn om te detecteren dat de klant de auto verlaten heeft. Deze actie zal worden doorgegeven aan het deelsysteem ``CaC Services`` zodat kan worden berekend welke bedrag zal worden doorberekend aan de klant.\\
+\hline Het systeem van de auto moet in staat zijn om een reservering van een parkeerplaats te maken via het ``Parking Facilities`` systeem. Daarbij zal de positie van de auto naar het ``Parking Facilities`` systeem worden gezonden, en zal dit systeem de meest geschikte parkeergarage selecteren op basis van kortste afstand en beschikbaarheid van de parkeerplaatsen van de parkeergarage. \\
+\hline Het systeem van de auto moet in staat om na ontvangst van de geselecteerde parkeergarage en plek binnen de garage, een navigatieprogramma op te starten dat de auto naar deze locatie zal brengen.\\
+\hline Het deelsysteem ``Parking Facilities`` moet in staat zijn om de auto te detecteren die de parkeerplek heeft gereserveerd. Dit kan gebeuren door het detecteren van een signaal die door een transmitter in de auto wordt uitgezonden, of door het lezen van het kenteken van de auto. Alleen in dien de gegevens van de auto overeenkomen met de parkeerplaats reservering door dezelfde auto, zal de slagboom van de parkeergarage worden geopend.  \\
+\hline De software van de auto moet in staat zijn om naar de parkeerplek binnen de garage te gaan, gebruik makend van de GPS-positie van de parkeerplek. \\
+\hline Indien de auto is aangekomen op de plek, wordt een signaal naar het deelsysteem ``CaC Services`` gestuurd, en wordt ook de beginstand van de oplaadpaal gezonden zodat met kan bijhouden hoeveel elektriciteit wordt geladen. \\
+\hline Indien de auto de auto een nieuwe aanvraag krijgt, moet de software van de auto in staat zijn om de nieuwe stand van de oplaadpaal te versturen naar het deelsysteem ``CaC Services`` zodat kan worden geregistreerd hoeveel elektriciteit is geladen. \\
+\hline Éen keer per maand zal het deelsysteem ``CaC Services`` een facturatie uitvoeren en de verbruiksgegevens van klanten naar het bank deelsysteem sturen. \\
+\hline
+\caption{Functional requirements i.v.m. feasibility / doel van het systeem}
+\end{longtable}
+
+\subsection{Non-functional requirements}
+%<Laat hier zien hoe u van de beschrijving van de concerns overgaat op kwaliteitseisen. Schrijf die kwaliteitseisen zo concreet mogelijk op, en maak deze waar mogelijk objectief meetbaar. Iedere eis hoort bij tenminste één stakeholder. Gebruik een kwaliteitsmodel (zoals Quint2) om de kwaliteitseisen te organiseren. Geef een beargumenteerde prioritering van de kwaliteitseisen, voorzien van een rationale. Inventariseer welke eisen met elkaar conflicteren, en gebruik de prioritering om consensus te bereiken.>
+In deze paragraaf zullen de non-functional requirements volgens het ISO25010:2011 model\cite{ISO25010} in de vorm van kwaliteitsattributen beschreven worden. Deze zijn bepaald aan de hand van de concerns van de diverse stakeholders. Wij hebben deze in drie groepen verdeeld. De kwaliteitsattributen met de hoogste prioriteit zullen als eerste meegenomen worden in de ontwikkelproces.
+\newline\newline
+De kwaliteitsattributen met de hoogste prioriteit zijn:
+\begin{itemize}
+\item Functional suitability
+\item Security
+\item Usability
+\item Time-behavior (Performance efficiency)
+\end{itemize}
+De kwaliteitsattributen met de medium prioriteit zijn:
+\begin{itemize}
+\item Scalability (Performance efficiency)
+\end{itemize}
+De kwaliteitsattributen met de laagste prioriteit zijn:
+\begin{itemize}
+\item Maintainability 
+\item Deployability
+\end{itemize}
+De rationale achter deze prioritering is de volgende:\newline
+\newline
+De use-case is het bestellen van een zelfrijdende auto. De functional requirements die gemoeid zijn met deze criteria hebben dus de hoogste prioriteit, zonder deze requirements zal het product namelijk niet door de klant worden gebruikt, aangezien er reeds een alternatief is (GroeneWielen). \newline
+\newline
+Door de opdrachtgever en door de sponsor ``Bits for Freedom`` is het showcasen van de privacy van de klantgegevens als subdoel van het project gemaakt. Zonder de sponsorgelden van ``Bits for Freedom`` zal het project niet uit te voeren zijn (of er moet een nieuwe sponsor worden gezocht). Ook de klant zal het zeer op prijs stellen dat op een veilige manier wordt omgesprongen met zijn gegevens.\newline
+\newline
+Door de klant is aangeven dat het bestellen van een auto middels een 1-click systeem zeer belangrijk wordt ondervonden. Dit aspect wordt gedekt door de criteria ``Usability``.\newline
+\newline
+Tenslotte is de response-tijd van een bestelling van een auto door de klant ook topprioriteit. De response-tijd valt onder de criteria ``Time efficiency``.
+\newline
+
+\subsubsection{Producteigenschap Security}
+\label{subsubsec:security}
+Verschillende stakeholders hebben aangegeven dat privacy zeer belangrijk te vinden. Hiervoor dient het systeem aan de kwaliteitsattribuut Confidentiality (Vertrouwelijkheid) te voldoen. Deze kwaliteitsattribuut geeft de mate aan waarin het systeem er voor zorgt dat gegevens alleen toegankelijk voor diegenen die geautoriseerd zijn. Deze kwaliteitsattribuut wordt geborgd door gebruik te maken van autorisatie en authenticatie. De beheerder van het systeem of een klant dient in te loggen om met het systeem te kunnen werken. Alle gebruikers van het systeem worden aan één of meerdere rollen gekoppeld. Per rol wordt aangegeven welke gegevens gelezen, toegevoegd, gewijzigd of verwijderd mag worden. Dit geldt ook voor externe systemen. Zij dienen  \newline
+\newline
+De kwaliteitsattribuut Integrity (integriteit) is voor het beschermen van de privacy ook van belang.  Deze kwaliteitsattribuut geeft aan in welke mate een systeem ervoor zorgt dat gegevens alleen toegankelijk zijn voor diegenen die geautoriseerd zijn. De maatregelen die getroffen worden voor vertrouwelijkheid, zijn ook voor deze kwaliteitsattribuut van toepassing.
+
+\subsubsection{Producteigenschap Functional Suitability }
+\label{subsubsec:functional}
+De project-ontwikkelaanpak zal op een agile-manier worden aangepakt: Eerst de top-prioriteit zaken moeten worden ontwikkeld. Dit zijn de requirements die in \ref{subsec:functionalrequirements} zijn beschreven. Dit betekent ook dat initieel de criteria ``Functional completeness`` minder van toepassing zal zijn, aangezien bij een agile-aanpak incrementeel functionaliteit zal worden toegevoegd. Een agile-aanpak is nodig omdat we niet de concurrent de gelegenheid willen geven om eerder op de markt te komen met een oplossing. In ieder geval zullen de functional requirements die genoemd zijn in \ref{subsec:functionalrequirements} moeten worden geïmplementeerd. Andere functional requirements, zoals het de implementatie van het deelsysteem ``CaC Admin``, zijn initieel van minder belang. Dit vanwege het feit dat het werk van de support medewerkers ook initieel door developers kan worden gedaan die ``on-the-fly`` rapporten kunnen genereren. \newline
+\newline
+De criteria ``Functional correctness`` is wel zeer belangrijk. De functionaliteiten die worden opgeleverd, moeten functioneel correct zijn. Hierbij zijn de volgende zaken van belang:
+\begin{itemize}
+\item Cross-check van GPS-positie door terugkoppeling naar de klant. Indien de klant een auto bestelt zal er een optie zijn om met 1-click een auto te bestellen. Hierbij zal de GPS-positie van de telefoon van de klant worden gebruikt. De app van de klant zal het meest adequate adres opzoeken op basis van de GPS-positie, echter, deze zal door de klant bevestigd moeten worden. GPS-posities zijn per definitie niet exact, en om aan de criteria ``Functional correctness`` te kunnen voldoen is deze stap noodzakelijk
+\item Nadat een auto een plek gereserveerd heeft op een parkeerplaats, zal de software van het ``Parking Facilities`` systeem de auto moeten detecteren. Er zullen twee manieren worden getest tijdens de POC. Enerzijds zal een proef worden uitgevoerd met enerzijds een transmitter in de auto en een sensor bij de slagboom en anderzijds zal een proef worden gedaan met een videosysteem dat het kenteken van de auto leest. Beide systemen zullen betreffende actie correct moeten kunnen uitvoeren, om te voorkomen dat onbevoegde gebruik kunnen maken van de parkeerplaats. 
+\item Op het moment dat de klant de auto is binnengekomen, zal een sensor op de stoel van de klant detecteren dat de klant ook daadwerkelijk aanwezig is in de auto, daarna kan de auto pas vertrekken. Dit zal correct moeten werken  en genoeg ``lag`` moeten worden ingebouwd opdat de auto niet vertrekt terwijl de klant bezig is met het instappen. Om dit zo veilig mogelijk te laten geschieden zal er een dubbele check moeten worden uitgevoerd: Zowel het portier moet gesloten zijn en de sensor van de stoel moet gedetecteerd hebben dat de klant zich in de auto bevindt.
+\end{itemize}
+
+``Functional appropriateness`` betekent de mate waarin de functies bijdragen aan het behalen van specifieke taken en doelen. Dit betekent dat aan alle requirements die genoemd zijn in \ref{subsec:functionalrequirements} zullen moeten worden geïmplementeerd. Wat is het verschil met ``Functional completeness'' ?
+\subsubsection{Producteigenschap Usability }
+\label{subsubsec:usability}
+De gebruikersvriendelijkheid van andere systemen dan Call-a-Car is volgens een aantal stakeholders niet optimaal. Tijdens het ontwikkelen van Call-a-Car dient hier aandacht aan besteed te worden aangezien dit een concurrentievoordeel zal beteken.\newline
+\newline
+Aan de criteria ``Appropriateness recognisability`` kan worden voldaan door de klant op zeer opzichtige wijze duidelijk te maken dat er sprake is van gebruikersgemak: De 1-click optie zal duidelijk moeten worden weergegeven door een grote button op het scherm te plaatsen waarmee de klant een auto kan bestellen. De criteria ``learnability`` is initieel van minder belang, aangezien de bediening van de functionaliteit zeer bepert en gebruiksvriendelijk is (er is maar één knop). Tijdens een tweede iteratie, waar het deelsysteem ``CaC Admin`` zal worden geïmplementeerd zal er aandacht moeten worden besteed aan dit aspect, opdat de gebruiker op een efficiënte manier kan worden getraind in het gebruik van de applicatie door bijvoorbeeld een ``guided-tour`` optie binnen de applicatie. 
+
+\subsubsection{Producteigenschap Performance Efficiency}
+\label{subsubsec:performance_efficiency}
+De subproducteigenschap ``Scalability`` kan worden geplaatst onder de producteigenschap ``Performance efficiency``, aangezien een applicatie die slecht is geschaald, problemen zal ondervinden met de performance, omdat de response- en of doorlooptijd van aanvragen negatief zullen worden beïnvloed naarmate er meer gebruik wordt gemaakt van het systeem. ``Scalablity`` heeft niet de hoogste prioriteit, aangezien er alleen problemen met de schaling van de applicatie worden verwacht indien particulieren in de toekomst hun auto's ter beschikking kunnen stellen aan Call-a-Car. Volgens de use-case beschrijving moet hier rekening mee worden gehouden bij de opzet van de architectuur. Dit betekent dat de eerste versies van het systeem niet 100\% schaalbaar hoeven te zijn.\newline
+\newline
+De criteria ``Time-behavior`` heeft betrekking op de response- en doorlooptijd van het systeem, waarbij de volgende opmerkingen kunnen worden gemaakt m.b.t. de response-tijd van de deelsystemen:
+\begin{itemize}
+\item Indien een klant een auto bestelt, moet de app binnen drie seconden een reactie kunnen geven. De reactie zal bestaan uit een indicatie over wanneer de auto kan worden verwacht. Dit is afhankelijk van het aantal zelfrijdende auto's die door Call-a-Car zijn aangeschaft. Bij het bestellen van een auto zijn drie deelsystemen betrokken: De app, het deelsysteem ``CaC Services`` en de ANCS-systemen van de zelfrijdende auto's. 
+De response-tijd van een bestelling zal dus kunnen worden verdeeld in de volgende onderdelen:
+	\begin{itemize}
+	\item Communicatie tussen ``CaC app`` en het deelsysteem ``CaC Services``
+	\item Communicatie tussen het deelsysteem ``CaC Services`` en alle beschikbare zelfrijdende auto's waarbij van deze auto's de positie zal worden opgevraagd (Divide-and-conquer) 
+    \item Het bepalen van de meest ideale beschikbare auto (merge). Er zal een algoritme moeten worden uitgevoerd dat de kortste afstand bepaald van alle beschikbare auto's. De auto met de kortste afstand zal naar de klant worden gestuurd
+    \item Communicatie tussen het deelsysteem ``Cac Services`` naar de app van de klant
+	\end{itemize}
+\item De response-tijd van de aanvraag van een parkeerplaats door een zelfrijdende auto is van ondergeschikt belang (geen prioriteit), aangezien die niet belangrijk is voor de klant.  
+\end{itemize}
+
+\subsubsection{Producteigenschap Maintainability}
+Het project zal via een agile aanpak worden uitgevoerd. Bedrijven zoals GroeneWielen zitten niet stil en zijn waarschijnlijk ook bezig om hun systeem te verbeteren. Afhankelijk van de producten die de concurrentie op de markt zet, moet Call-a-Car om kunnen gaan met veranderingen in het ontwikkelde product. Om goed te kunnen anticiperen op deze veranderingen is het nodig dat de code op zulk een manier is ontwikkeld, dat het makkelijk is om wijzigingen door te voeren: de architectuur moet flexibel zijn en design patterns moeten worden toegepast zodat toekomstige ontwikkelaars makkelijk hun weg kunnen vinden indien zij bij het project betrokken worden. In een tijd waar goede ontwikkelaars moeilijk te vinden zijn, is dit van groot belang. De volgende zaken worden daarom benadrukt om aan de criteria's ``Modularity``, ``Reusability``, ``Modifiability`` en ``Testability`` te voldoen:
+\begin{itemize}
+\item Er moet voor worden gezorgd dat er limieten worden gesteld aan de cyclomatische complexiteit, totale grootte van het systeem, duplicatie en grootte van de units (methodes) \cite{McCabe} \cite{Heitlager}
+\item Ontwikkelaars moeten kennis hebben van de toepassing van OO design patterns \cite{gamma1994design} 
+\item De Test Driven Development aanpak wordt geadviseerd \cite{citeulike:1587604}
+\end{itemize}
+
+\subsubsection{Producteigenschap Deployability}
+Dit project zal op een agile manier werken. Hiervoor is van belang dat de software op frequente en betrouwbare wijze op de productieomgeving uitgeleverd kan worden. De producteigenschap Deployability\cite{Bellomo} is geen onderdeel van de ISO-25010:2011 specificatie maar is op een agile manier van werken wel van belang. De volgende eisen worden gesteld:
+\begin{itemize}
+\item Alle software wordt binnen 10 minuten gebouwd.
+\item Alle unit testen worden binnen 10 minuten uitgevoerd. Deze eis zorgt ervoor dat na het inchecken van code het vrij snel duidelijk is of bepaalde functionaliteit omgevallen is.
+\end{itemize}
+Indien bovenstaande eisen op redelijkerwijze niet gehaald kan worden, zal bekeken moeten of het ontwikkelproces anders ingericht moet worden.
+
+\subsubsection{Conflicterende criteria's}
+\label{subsubsec:Conflicterende_criterias}
+De overheid wil veel aan de markt overlaten, zodat de markt bepaalde diensten kan aanbieden. Dit is tegenstrijdig met het beoogde betaalsysteem, aangezien deze door de bank geleverd worden. Andere betaalsystemen zal het systeem niet ondersteunen. Dit geldt ook voor de gebruikte auto's. In eerste instantie worden auto's van één fabrikant toegelaten. Het gevaar bestaat dat het systeem te afhankelijk wordt van de bank en de autofabrikant, waardoor het vermarkten van het systeem moeilijker wordt.
+
+\subsection{Constraints}
+%<Benoem hier eventuele beperkingen die het ontwerp en de totstandkoming van het software systeem kunnen beïnvloeden.>
+Deze paragraaf beschrijft de beperking die het ontwerp en de realisatie van het systeem negatief kunnen beïnvloeden. De volgende beperkingen worden, in willekeurige volgorde, onderkend:
+\begin{table}[H]
+\begin{tabular}{|@{\makebox[1cm][c]{\rownumber\space}}|p{15cm}|} 
+\hline Het totale budget van het project bedraagt € 2.000.000. Dit budget beperkt het aantal uren die besteed kunnen worden, met als gevolg dat een beperkt aantal requirements geïmplementeerd kunnen worden. \\
+\hline Het deelbudget dat besteed kan worden aan development is 1.000.000 \\
+\hline Voor de afhandeling van de betalingen wordt het systeem pay-by-fingerprint van de bank gebruikt. De bank is sponsor van het budget en wil dit systeem promoten. Een ander betalingssysteem, die misschien beter en goedkoper is, is geen optie. De klant zal een app moeten downloaden waarmee betaaloverzichten kunnen worden opgeroepen en betalingen mee kunnen worden gedaan\\
+\hline Het systeem moet binnen twee jaar operationeel zijn. \\
+\hline De voertuigen communiceren via 4G met het systeem. \\
+\hline De benodigde software in de zelfrijdende auto's wordt door de autofabrikant geleverd\\
+\hline De auto's die worden gebruikt zullen worden geleverd door de autofabrikant.\\
+\hline De standaard voor de software van de parkeergelegenheden wordt beschikbaar gesteld aan andere bedrijven.\\
+\hline
+\end{tabular}
+\caption{Constraints}
+\end{table} 
+Op dit moment is 5G in Nederland niet beschikbaar. De concern van de stakeholder Alex Aanvoerder is op dit moment niet reëel. Wij stellen voor om 4G te gebruiken als communicatiemiddel.\\
+De platformen waarop de CaC-App en Cac Admin moeten werken is nog niet bekend en zal nog gedefinieerd moeten worden. Voor de CaC-App is het van belang dat deze draait op platformen waarop ook de betalings app kan werken.
+
+\subsection{Risico's}
+De volgende risico's kunnen worden onderkend:
+\begin{itemize}
+\item De autofabrikant zal de software leveren voor de zelfrijdende auto's. Call-a-car is dus afhankelijk van de autofabrikant betreffende de feasibility van het project.
+\item Er moet uitgezocht worden of auto's volgens de wetgeving zelfstandig en zonder bestuurder mag rijden. Indien dit niet toegestaan is, kan het project geen doorgang vinden.
+\item Developmentkosten. Er is een risico dat er meer tijd moet worden besteed aan de ontwikkeling van het systeem dan is gepland.
+\item Technische feasibility. Er zijn een aantal nieuwe technieken die worden toegepast en het risico bestaat dat deze moeilijk aan elkaar te knopen zijn.
+\item Het is op dit moment niet bekend hoeveel voertuigen de fabrikant gaat leveren en tegen welke kosten. Dit is van invloed op het aantal mogelijke gebruikers. Immers als er te weinig voertuigen zijn, moeten de gebruikers lang wachten totdat de auto voor komt rijden.
+\item De spreiding van de gebruikers in Nederland is nog niet bekend. Aanbeveling is om in een beperkt gebied een pilot uit te voeren, in plaats van heel Nederland. Hierdoor hoeven de auto's niet over het hele land verspreid te worden, zodat de aanrijtijden beperkt kunnen blijven.
+\item De gebruikers bezitten ongetwijfeld een variëteit smartphones van verschillende leveranciers met besturingssystemen van verschillende versies. Is het mogelijk om al deze varianten te ondersteunen en is dat ook wenselijk?
+\end{itemize}
+
+\section{Architecture}
+\label{sec:architecture}
+%<Geef een inleiding waarin u aangeeft vanuit welke perspectieven u het systeem gaat beschrijven, en motiveer deze keuze. >
+Wij zullen voor de beschrijving van de architectuur gebruik maken van Kruchtens "4+1" View model \cite{Kruchten:1995}. Dit model, zie figuur \ref{fig:kruchten}, bestaat uit de volgende perspectieven:
+\begin{itemize}
+\item Logische perspectief: dit perspectief biedt via class diagrammen inzicht in de relatie tussen de functionele requirements. Deze perspectief is bestemd voor de gebruikers van het systeem.
+\item Ontwikkelingsperspectief: een perspectief waarin de relaties tussen de verschillende software componenten van het systeem getoond worden. De ontwikkelaars gebruiken dit perspectief voor het ontwikkelen van de software. Hiervoor worden de UML component en package diagrammen gebruikt.
+\item Proces perspectief: dit perspectief toont het dynamische gedrag van het systeem. Hierbij zijn een aantal non-functionele requirements betrokken. Met behulp van de UML activity diagram wordt dit perspectief afgebeeld. Dit perspectief is bestemd voor de systeemontwerpers en de systeemintegrators.
+\item Fysieke perspectief: dit perspectief beeldt de software componenten af op fysieke componenten (zoals computers) en de relaties tussen deze fysieke componenten. In dit perspectief zijn voornamelijk de non-functionele requirements zoals scalability zijn van belang. De UML deployment diagram wordt gebruikt om dit perspectief af te beelden. De stakeholder is de systeemontwerper.
+\item De overkoepelende perspectief zijn de scenario's. Vooral voor de gebruikers en voor de ontwikkelaars zijn de scenario's een hulp voor een beter begrip van de relatie tussen de functionele requirements en het systeem. De UML use case diagram wordt gebruikt om de relaties tussen de scenario's af te beelden.
+\end{itemize} 
+\begin{figure}
+	\centering
+	\includegraphics{Kruchten.png}
+    \caption{"4+1" model van Kruchten}
+    \label{fig:kruchten}
+\end{figure}
+Met behulp van deze perspectieven wordt de architectuur van het systeem vanuit verschillende kanten bekeken. De stakeholders hebben elk een verschillende blik op het systeem en door de perspectieven worden deze diverse blikken bediend. De notatietaal UML 2.0\cite{omg2011umls} wordt toegepast voor het maken van de specifieke diagrammen\footnote{Zie \url{https://en.wikipedia.org/wiki/4+1_architectural_view_model}}. 
+
+\subsection{Architectural vision}
+\label{secsub:architectural vision}
+%< Geef  hier de algemene architectuur principes waar u zich aan zult houden, mogelijk door te verwijzen naar gebruikte architectuurpatronen of geselecteerde tactieken.>
+Voor de architectuur van het systeem zal zoveel mogelijk gebruikt gemaakt worden van bestaande en beproefde principes. Dit heeft een aantal voordelen. De architectuur is zo eenvoudig te begrijpen. De ontwikkelaars zullen hierdoor de applicatie sneller kunnen bouwen. Bovendien kan het systeem zonder te veel moeite aan andere personen overgedragen worden. Dit komt dus de criteria `learnability` ten goede.
+\newline 
+\newline
+In figuur \ref{fig:boundaries} op pagina \pageref{fig:boundaries} worden de boundaries van het systeem beschreven middels een diagram. In dit diagram worden tevens de architectuurpatronen aangeduid met AP[x], waarbij x het specifieke architectuurpatroon aangeeft. De architectuurpatronen die worden toegepast bij de communicatie van de verschillende deelsystemen worden hieronder beschreven:\newline
+\newline
+\begin{itemize}
+\item Event-bus architectuurpatroon. Het Event-bus architectuurpatroon zal worden toegepast bij de communicatie tussen de volgende systemen:
+	\begin{itemize}
+	\item AP1: CaC App en CaC Services. Het Event-bus architectuurpatroon zorgt voor een ontkoppeling tussen twee communicerende systemen en dit is precies een requirement die van toepassing is tussen de communicatie van de Cac App en de CaC Services: Het niet beschikbaar zijn van bepaalde onderdelen van de CaC Services mag geen invloed hebben op het gebruik van de CaC App, de gebruiker moet ook in deze situatie in staat worden gesteld om een bestelling te plaatsen. Ook het terugrapporteren van de bevestiging van de bestelling dien asynchroon te gebeuren: Het kan namelijk zijn dat de telefoon van de klant tijdelijk het signaal verliest. Er zal gebruik worden gemaakt van een `Two-way` Event-bus, waarbij een `bestelling queue` en een `bevestiging queue` worden gebruikt
+    \item AP4: De zelfrijdende auto's zullen aanvragen moeten doen naar het Parking Facilities Systeem om een parkeerplaats te reserveren. Deze communicatie zal net als bij AP1 worden gedaan met onbetrouwbare GSM-verbindingen, waarbij het belangrijk is om deze twee systemen te ontkoppelen. Een Event-bus patroon is dus gerechtvaardigd, waarbij er ook een Two-way Event-bus principe zal worden toegepast m.b.v. twee queues
+	\item AP6: CaC Services en ANCS. Ook de communicatie tussen CaC Services en het `Auto Navigatie en Controle Systeem` zal berusten op het Event-bus architectuurpatroon, aangezien de communicatie tussen deze twee deelsystemen ook ontkoppeld dient te worden: Het niet beschikbaar zijn van een bepaalde auto (omdat deze zich bijvoorbeeld in een tunnel bevindt), mag niet leiden tot het verloren gaan van de aanvraag van het CaC Services naar het ANCS van de auto. Ook hier zullen er twee queues worden gebruikt, één voor de aanvraag van de positie en beschikbaarheid van de autos en één voor de bevestiging.
+    \end{itemize}
+\item Het Client-Server architectuurpatroon zal in de volgende gevallen worden toegepast:
+	\begin{itemize}
+    	\item AP2: Het deelsysteem CaC Admin zal gegevens opvragen van de CaC Services. Laatstgenoemde services zullen nooit het initiatief nemen en in dit geval is een Client-Server patroon dus voldoende, waar een stateful server zal worden gebruikt
+	\item AP3: Het deelsysteem `Parking Facilities Systeem` zal het initiatief nemen voor het versturen van gegevens naar het deelsysteem CaC Services: Het PFS weet namelijk wanneer gegevens verstuurt moeten worden, indien de auto de garage binnenkomt, wanneer de laadactie (elektriciteitsverbruik) wordt geïnitieerd en beëindigd en wanneer de auto de garage verlaat. Er is dus geen reden voor het CaC Services om een actie te initieren: Een Client-Server patroon waarbij het PFS de client zal zijn en CaC Services te server, is dus voldoende. Ook hier zal een stateful server worden toegepast
+	\item AP5: CaC Services zal periodiek een aanvraag doen naar het Bank Systeem om overzichten te verkrijgen van betalingen die zijn gedaan door de klanten. Hier zal ook een stateful-server binnen het banksysteem worden gebruikt via een Client-Server patroon
+    \end{itemize}
+\item AP4
+\item AP5
+\item AP6
+\end{itemize} 
+
+
+security: beter stageful!
+
+De twee apps, CaC App en CaC Admin Systeem, vragen bij de CaC services gegevens op. Hiervoor zal de client-server pattern gebruikt worden. De CaC services is hierbij de server en de apps zijn de client. Voor security en privacy zal de verbinding via https gaan. 
+Voor de Cac Admin is de Cac services een stateful server, zodat een snelle interactie voor de beheerder gerealiseerd kan worden. Voor de gebruiker van de Cac App is dat niet nodig. Deze gebruiker is niet heel vaak en lang actief; voornamelijk voor het bestellen van een auto. Daarom zal de CaC services als een stateless server dienen. \newline
+De apps zullen ontworpen worden volgens de Model-View-Controller pattern, aangezien de nadruk bij de applicatie om de user-interface gaat. Dit is anno 2018 een standaard en veel ontwikkeltools bieden hier functionaliteit voor.\newline
+\newline
+De CaC service stuurt de voertuigen aan. Hiervoor is het noodzakelijk dat de CaC service de GPS coördinaten en andere parameters van het voertuig kan opvragen. Bovendien moet de CaC Services commando's naar het voertuig kunnen sturen, zoals het adres of parkeerplaats waarheen het voertuig heen moet rijden. Het voertuig moet zelf ook het initiatief kunnen nemen tot communicatie met de CaC services. Daarom zal de Peer-to-peer pattern worden toegepast tussen het voertuig en de CaC services. \newline 
+\newline 
+Zoals eerder beschreven zijn een aantal kwaliteitsattributen van dit project van belang. De belangrijkste zijn security (\ref{subsubsec:security}) en performance (\ref{subsubsec:performance_efficiency}). Met behulp van tactieken kunnen maatregelen genomen worden om de kwaliteitsattributen beter in de software te implementeren \cite{HARRISON20101735}. De tactieken voor de kwaliteitsattribuut security zijn\cite{BassSoftwareArchitecture2012}:
+\begin{itemize}
+\item Authenticate users: controleren of gebruikers zijn wie zij beweren te zijn.
+\item Authorize users: controleren of gebruikers de juiste rechten hebben voor het uitvoeren van bepaalde taken.
+\item Maintain data confidentiality: toepassen van encryptie en beveiligde verbindingen zodat ongeautoriseerde toegang voorkomen kan worden.
+\end{itemize}
+De volgende tactieken worden toegepast voor het realiseren van de kwaliteitsattribuut performance \cite{BassSoftwareArchitecture2012}:
+\begin{itemize}
+\item Introduce concurrency: door processen tegelijkertijd te laten lopen, kan meer werk verricht worden in dezelfde tijd.
+\item Maintain multiple copies of either data or computations: waar mogelijk wordt caching toegepast, zodat minder communicatie naar b.v. een database noodzakelijk is.
+\item Increase available resources: snellere en betere processoren zorgt voor snellere reactie tijden. Uitgezocht moet worden in wat binnen het budget mogelijk is.
+\end{itemize} 
+De voorkeur gaat uit om gebruik te maken van een cloud oplossing. De teamleden hoeven dan hun tijd niet te besteden aan het inrichten en beheer van het systeem. Uitgezocht moet worden of dit inderdaad goedkoper is en dat aan Europese en Nederlandse wetgeving voldaan kan worden omtrent het opslaan van persoonsgegevens.\newline
+
+\subsection{Viewpoint or perspective x}
+%<geef per viewpoint aan: 
+%- voor welke stakeholders het viewpoint van belang is
+%- welke views er worden gebruikt; dit kunnen er meer dan één zijn
+%- een uitleg van de gebruikte diagramonderdelen per view
+%- een beschrijving van de views; als u architectuurpatronen heeft gebruikt zijn die uiteraard handig bij de beschrijving
+%- argumenten voor de gekozen oplossing, bij voorkeur met enkele alternatieven oplossingen en de afweging die u heeft gemaakt>
+
+\subsection{Viewpoint or perspective y}
+
+\section{Analysis}
+\label{sec:analysis}
+%<Beschrijf hier wat de bedoeling is van het doorlopen van scenario’s>
+\todo{Ivo - scenario 1: bestellen auto vanuit de gebruiker}
+\todo{Marco - scenario 2: maandelijkse betalingen}
+
+\subsection{Scenario 1}
+
+%<Beschrijf:
+%- een scenario of use-case
+%- de stakeholders voor wie het scenario van belang is
+%- de kwaliteitseisen die bij het doorlopen van het scenario bekeken kunnen worden
+%- de analyse waarom de architectuur voldoet aan die kwaliteitseisen>
+
+\subsection{Scenario }
+
+\section{Glossary}
+\label{sec:glossary}
+ 
+\printglossaries
+\bibliographystyle{plain}
+\bibliography{bib} 
+\end{document}
+

@@ -13,7 +13,7 @@
 \usepackage{kantlipsum}
 \usepackage{longtable}
 \usepackage{url}
-\textwidth = 550pt
+\textwidth = 520pt
 \textheight = 680pt
 \usepackage{array,etoolbox}
 \preto\tabular{\setcounter{magicrownumbers}{0}}
@@ -24,6 +24,12 @@
 \usepackage{glossaries}
 \makeglossaries
 %gebruik gls{<entry>} voor verwijzen naar een item in de glossary
+\newglossaryentry{ANCS}
+{
+  name=ANCS,  
+  description={Auto Navigatie en Controle Systeem. Systeem in auto voor navigatie en controle over de besturing van de auto.}
+}
+
 \newglossaryentry{concern}
 {
   name=concern,
@@ -67,13 +73,13 @@
 \begin{table}
 \begin{tabular}{|l|l|}
 \hline
-	\emph{Project} & Call-a-Car \\
-	\emph{Author 1} & Marco Huijben \\
-	\emph{Student number} & 838316640\\
-	\emph{Author 2} & Ivo Willemsen\\
-	\emph{Student number} & 851926289\\
-	\emph{Date} & 21-3-2018\\
-	\emph{Version} & 0.2\\	
+  \emph{Project} & Call-a-Car \\
+  \emph{Author 1} & Marco Huijben \\
+  \emph{Student number} & 838316640\\
+  \emph{Author 2} & Ivo Willemsen\\
+  \emph{Student number} & 851926289\\
+  \emph{Date} & 21-3-2018\\
+  \emph{Version} & 0.2\\  
 \hline
 \end{tabular}
 \caption{Metadata}
@@ -82,7 +88,7 @@
 \begin{table}
 \begin{tabular}{|l|l|l|}
 \hline
-	\emph{Version} & \emph{Date} & \emph{Change}\\ \hline
+  \emph{Version} & \emph{Date} & \emph{Change}\\ \hline
     \ 0.1 & 4-3-2018 & Initial version\\ \hline
     \ 0.2 & 21-3-2018 & Architectuur visie en scenario's\\ \hline
 \end{tabular}
@@ -92,7 +98,7 @@
 \begin{table}
 \begin{tabular}{|l|l|}
 \hline
-	\emph{name} & \emph{work done}\\ \hline
+  \emph{name} & \emph{work done}\\ \hline
 \end{tabular}
 \caption{Division of work}
 \end{table}
@@ -116,8 +122,8 @@ Een andere doelgroep zijn mensen die graag de beschikking willen hebben over een
 In figuur \ref{fig:boundaries} worden de grenzen van het te ontwikkelen systeem aangegeven. 
 
 \begin{figure}
-	\centering
-	\includegraphics{cac_context.png}
+  \centering
+  \includegraphics{cac_context.png}
     \caption{System boundaries, aangegeven door de gestippelde lijn}
     \label{fig:boundaries}
 \end{figure}
@@ -131,9 +137,9 @@ Het systeem CaC (Call-a-Car) bestaat uit de volgende onderdelen:
 
 De volgende deelsystemen spelen een rol in de communicatie met bovenstaande deelsystemen, maar vallen niet binnen de systeem boundaries van het te ontwikkelen systeem:
 \begin{itemize}
-	\item Het ``Auto Navigatie en Control Systeem`. Deze software zal door de leverancier worden ontwikkeld, waarbij Call-a-Car zal aangeven wat de interface moet zijn.
-	\item Het banksysteem.
-	\item Het deelsysteem ``Betaal App`` van de bank. De klant zal deze app gebruiken om maandelijkse betalingen uit te voeren
+  \item Het ``Auto Navigatie en Control Systeem`. Deze software zal door de leverancier worden ontwikkeld, waarbij Call-a-Car zal aangeven wat de interface moet zijn.
+  \item Het banksysteem.
+  \item Het deelsysteem ``Betaal App`` van de bank. De klant zal deze app gebruiken om maandelijkse betalingen uit te voeren
 \end{itemize}
 
 In het diagram zijn een aantal notities opgenomen die de architectuurpatronen aanduiden (AP) die in een later hoofdstuk zullen worden beschreven.
@@ -172,10 +178,10 @@ Deze paragraaf beschrijft de stakeholders van de groep Ontwikkelorganisatie.
  \hline Functie & Oprichter Call-a-Car \\ 
  \hline Omschrijving & Hij is de initiatiefnemer van het project en eigenaar van het bedrijf Call-a-Car \\
  \hline Concerns & 
- 	\begin{itemize} 
-    	\item Budget van EURO 2.000.000, waarvan EURO 1.000.000 voor o.a. reclame en implementatie. Een deel van het budget is een buffer voor het derde jaar. Voor software ontwikkeling moet onder de EURO 1.000.000 blijven.
-    	\item Het project moet een werkbaar systeem als resultaat hebben en binnen twee jaar operationeel zijn.
-    	\item Er moet voorzichtig worden omgegaan met persoonlijke gegevens. Privacy is van groot belang.       
+  \begin{itemize} 
+      \item Budget van EURO 2.000.000, waarvan EURO 1.000.000 voor o.a. reclame en implementatie. Een deel van het budget is een buffer voor het derde jaar. Voor software ontwikkeling moet onder de EURO 1.000.000 blijven.
+      \item Het project moet een werkbaar systeem als resultaat hebben en binnen twee jaar operationeel zijn.
+      \item Er moet voorzichtig worden omgegaan met persoonlijke gegevens. Privacy is van groot belang.       
         \item De gebruiker moet type en merk van voertuig kunnen selecteren. 
         \item De kosten van een rit is afhankelijk van type voertuig en de gereden kilometers.
         \item Het moet makkelijk werken dan GroeneWielen.
@@ -200,9 +206,9 @@ Deze paragraaf beschrijft de stakeholders van de groep Ontwikkelaars.
  \hline Functie & Software Architect \\ 
  \hline Omschrijving & Zij is verantwoordelijk voor de softwarearchitectuur van het systeem.\\
  \hline Concerns & 
-  	\begin{itemize} 
-    	\item Budget voor softwareontwikkeling is onder EURO 1.000.000.
-    	\item Het systeem moet uitbreidbaar zijn.
+    \begin{itemize} 
+      \item Budget voor softwareontwikkeling is onder EURO 1.000.000.
+      \item Het systeem moet uitbreidbaar zijn.
         \item De beschikbaarheid moet 7*24 worden.
         \item Het voertuig belt vijf minuten voor aankomst de klant op.
         \item De betalingen moeten later alsnog gedaan kunnen worden, indien de bank een storing in het betaalsysteem heeft.
@@ -221,9 +227,9 @@ Deze paragraaf beschrijft de stakeholders van de groep opdrachtgevers.
  \hline Functie & Klant \\ 
  \hline Omschrijving & De klant bestelt een auto en gaat hiermee rijden. Zij gebruikt nu GroeneWielen en is hierover niet enthousiast.\\
  \hline Concerns & 
- 	\begin{itemize} 
-    	\item De auto moet makkelijk te regelen zijn. Dit moet makkelijker gaan dan bij GroeneWielen.
-    	\item Alleen betalen voor de kilometers die met de auto gereden worden.
+  \begin{itemize} 
+      \item De auto moet makkelijk te regelen zijn. Dit moet makkelijker gaan dan bij GroeneWielen.
+      \item Alleen betalen voor de kilometers die met de auto gereden worden.
         \item De auto moet met de app geopend kunnen worden.
     \end{itemize}\\
  \hline
@@ -240,9 +246,9 @@ Deze paragraaf beschrijft de stakeholders van de groep opdrachtgevers.
  \hline Functie & Representant Ministerie van Verkeer \\
  \hline Omschrijving & Ministerie wil een experiment uitvoeren met zelfrijdende auto's\\
  \hline Concerns & 
- 	\begin{itemize} 
-    	\item Het ministerie wil een vrije markt creëren, zodat andere bedrijven in de toekomst ook hun diensten kunnen aanbieden. Het ministerie wil niet dat het gehelen systeem van parkeerfaciliteiten en het systeem dat door Call-a-Car gebouwd wordt, in handen komt van één partij.
-    	\item Het ministerie wil dat de parkeerfaciliteiten later worden verkocht aan een andere partij.
+  \begin{itemize} 
+      \item Het ministerie wil een vrije markt creëren, zodat andere bedrijven in de toekomst ook hun diensten kunnen aanbieden. Het ministerie wil niet dat het gehelen systeem van parkeerfaciliteiten en het systeem dat door Call-a-Car gebouwd wordt, in handen komt van één partij.
+      \item Het ministerie wil dat de parkeerfaciliteiten later worden verkocht aan een andere partij.
         \item Het ministerie wil eigenaar worden van de standaard op basis welke de API zal worden gebouwd.
         \item Het ministerie wil per week geaggregeerde informatie over de gereden kilometers. De kilometers voor het rijden naar en vanaf de parkeerplaatsen tellen hierbij niet mee.
         \item Het ministerie wil per direct een melding over incidenten met de auto's. Dit geldt alleen als de auto zelfstandig rijdt en geen passagiers vervoert.
@@ -258,8 +264,8 @@ Deze paragraaf beschrijft de stakeholders van de groep opdrachtgevers.
  \hline Functie & Bank \\ 
  \hline Omschrijving & De bank financiert een deel van het project in ruil voor een platform voor de betalingen\\
  \hline Concerns & 
- 	\begin{itemize} 
-    	\item Het systeem maakt gebruik van de betalingssysteem (pay-by-fingerprint) van de bank via de te downloaden app van de bank.
+  \begin{itemize} 
+      \item Het systeem maakt gebruik van de betalingssysteem (pay-by-fingerprint) van de bank via de te downloaden app van de bank.
         \item De gebruikers dienen of een rekening bij de bank te hebben of moeten hun credit card gegevens aanleveren. Tevens moeten zij de app van de bank installeren.
     \end{itemize}\\
  \hline
@@ -273,9 +279,9 @@ Deze paragraaf beschrijft de stakeholders van de groep opdrachtgevers.
  \hline Functie & Bits of Freedom representant\\ 
  \hline Omschrijving & Bits of freedom financiert een deel van het project en in ruil wil het de klantprivacy showcasen \\
  \hline Concerns & 
- 	\begin{itemize} 
-    	\item Bits of Freedom is geïnteresseerd in het ontwikkelen van een standaard waar iedereen die in te toekomst in aanraking komt met Call-a-Car zich aan zou moeten houden.
-    	\item Bits of Freedom wil dat persoonsgerelateerde data niet wordt gecommuniceerd met de parkeerfaciliteiten.
+  \begin{itemize} 
+      \item Bits of Freedom is geïnteresseerd in het ontwikkelen van een standaard waar iedereen die in te toekomst in aanraking komt met Call-a-Car zich aan zou moeten houden.
+      \item Bits of Freedom wil dat persoonsgerelateerde data niet wordt gecommuniceerd met de parkeerfaciliteiten.
         \item Bits of Freedom wil dat het publiek meer bewust wordt omtrent privacy.
     \end{itemize}\\
  \hline
@@ -293,8 +299,8 @@ De onderstaande stakeholders zijn te kenmerken als beheerders van het systeem.
  \hline Functie & Service medewerkers  \\ 
  \hline Omschrijving & Deze medewerkers leveren overzichten, lossen problemen van klanten op en zijn aanspreekpunt voor derden\\
  \hline Concerns &
- 	\begin{itemize} 
-    	\item Kunnen bekijken van (historische) gegevens van gebruikers om deze te kunnen helpen bij problemen, parkeergelegenheden en auto's.
+  \begin{itemize} 
+      \item Kunnen bekijken van (historische) gegevens van gebruikers om deze te kunnen helpen bij problemen, parkeergelegenheden en auto's.
     \end{itemize}\\
  \hline
 \end{tabular}
@@ -310,8 +316,8 @@ Deze paragraaf beschrijft de overige stakeholders.
  \hline Organisatie & Provincie Limburg \\
  \hline Omschrijving & De provincie stelt de parkeerplaatsen te beschikking. \\
  \hline Concerns & 
- 	\begin{itemize} 
-    	\item De provincie stelt de parkeerplaatsen ter beschikking.
+  \begin{itemize} 
+      \item De provincie stelt de parkeerplaatsen ter beschikking.
     \end{itemize}\\
  \hline
 \end{tabular}
@@ -323,8 +329,8 @@ Deze paragraaf beschrijft de overige stakeholders.
  \hline Naam & Autofabrikant \\
   \hline Omschrijving & De autofabrikant is de leverancier van de zelfrijdende elektrische auto's en zal de noodzakelijk software voor de auto's leveren a.d.h.v. de specificaties die door Call-a-Car zullen worden opgesteld. \\
  \hline Concerns &
- 	\begin{itemize} 
-    	\item Indien het systeem is geïmplementeerd, wil de autofabrikant dat zijn auto's gebruikt gaan worden
+  \begin{itemize} 
+      \item Indien het systeem is geïmplementeerd, wil de autofabrikant dat zijn auto's gebruikt gaan worden
     \end{itemize}\\
  \hline
 \end{tabular}
@@ -373,6 +379,7 @@ De kwaliteitsattributen met de hoogste prioriteit zijn:
 \item Security
 \item Usability
 \item Time-behavior (Performance efficiency)
+\item Availability (Reliability)
 \end{itemize}
 De kwaliteitsattributen met de medium prioriteit zijn:
 \begin{itemize}
@@ -390,6 +397,9 @@ De use-case is het bestellen van een zelfrijdende auto. De functional requiremen
 Door de opdrachtgever en door de sponsor ``Bits for Freedom`` is het showcasen van de privacy van de klantgegevens als subdoel van het project gemaakt. Zonder de sponsorgelden van ``Bits for Freedom`` zal het project niet uit te voeren zijn (of er moet een nieuwe sponsor worden gezocht). Ook de klant zal het zeer op prijs stellen dat op een veilige manier wordt omgesprongen met zijn gegevens.\newline
 \newline
 Door de klant is aangeven dat het bestellen van een auto middels een 1-click systeem zeer belangrijk wordt ondervonden. Dit aspect wordt gedekt door de criteria ``Usability``.\newline
+\newline
+Er moet voor worden gezorgd dat er te allen tijde sprake is van een hoge beschikbaarheid. Het niet kunnen garanderen van een hoge beschikbaarheid kan zijn grondslag vinden in technische tekortkomingen, maar ook door te lage fysieke beschikbaarheid van bijvoorbeeld zelfrijdende auto's. In beide situaties dient op een uniforme wijze terugkoppeling plaats te vinden naar de gebruiker toe.
+\newline
 \newline
 Tenslotte is de response-tijd van een bestelling van een auto door de klant ook topprioriteit. De response-tijd valt onder de criteria ``Time efficiency``.
 \newline
@@ -426,15 +436,25 @@ De criteria ``Time-behavior`` heeft betrekking op de response- en doorlooptijd v
 \begin{itemize}
 \item Indien een klant een auto bestelt, moet de app binnen drie seconden een reactie kunnen geven. De reactie zal bestaan uit een indicatie over wanneer de auto kan worden verwacht. Dit is afhankelijk van het aantal zelfrijdende auto's die door Call-a-Car zijn aangeschaft. Bij het bestellen van een auto zijn drie deelsystemen betrokken: De app, het deelsysteem ``CaC Services`` en de ANCS-systemen van de zelfrijdende auto's. 
 De response-tijd van een bestelling zal dus kunnen worden verdeeld in de volgende onderdelen:
-	\begin{itemize}
-	\item Communicatie tussen ``CaC app`` en het deelsysteem ``CaC Services``
-	\item Communicatie tussen het deelsysteem ``CaC Services`` en alle beschikbare zelfrijdende auto's waarbij van deze auto's de positie zal worden opgevraagd (Divide-and-conquer) 
+  \begin{itemize}
+  \item Communicatie tussen ``CaC app`` en het deelsysteem ``CaC Services``
+  \item Communicatie tussen het deelsysteem ``CaC Services`` en alle beschikbare zelfrijdende auto's waarbij van deze auto's de positie zal worden opgevraagd (Divide-and-conquer) 
     \item Het bepalen van de meest ideale beschikbare auto (merge). Er zal een algoritme moeten worden uitgevoerd dat de kortste afstand bepaald van alle beschikbare auto's. De auto met de kortste afstand zal naar de klant worden gestuurd
     \item Communicatie tussen het deelsysteem ``Cac Services`` naar de app van de klant
-	\end{itemize}
+  \end{itemize}
 \item De response-tijd van de aanvraag van een parkeerplaats door een zelfrijdende auto is van ondergeschikt belang (geen prioriteit), aangezien die niet belangrijk is voor de klant.  
 \end{itemize}
 
+\subsubsection{Producteigenschap Availability}
+Niet alle systemen hoeven 100\% beschikbaar te zijn. Voor een support engineer is het vervelend als het CaC Admin Systeem niet in de lucht is, maar dit heeft geen negatieve directe impact op de klant. De beschikbaarheid van de app is essentieel. Indien de app niet beschikbaar bij het bestellen van een auto, is dit in feite `nee verkopen` en kan resulteren in reputatieschade. Het zou nog erger zijn, indien een bestelling van een auto succesvol is, maar dat, door verschillende oorzaken, de auto niet `komt opdagen`. Dit betekent dat nadat door de CaC Services een bevestiging is verzonden dat een auto naar de klant wordt gestuurd, het nog belangrijker is dat de auto ook daadwerkelijk bij de klant aankomt, en dus het `Auto Navigatie en Controle Systeem` en de auto zelf, zeer betrouwbaar moeten zijn. Dit is een probleem aangezien zowel de auto als de software van de auto een externe afhankelijkheid is, aangezien beide aangeleverd worden door de auto fabrikant. \newline\newline
+Een ander probleem dat zich voordoet is het feit dat de CaC App gehost wordt door een mobiele telefoon, waar een operating systeem van Apple of Android op draait. Een lagere beschikbaarheid t.g.v. een fout in het operating systeem is dus ook een externe afhankelijkheid.
+\newline\newline
+Buiten deze externe afhankelijkheden, kan wel aandacht worden besteed aan verhogen van de beschikbaarheid middels de volgende aandachtspunten:
+\begin{itemize}
+  \item CaC Services: Er dient een hot-standby oplossing te komen, waarbij in het geval van een fout in een server, een andere server te taken (tijdelijk) waarneemt
+    \item Voldoende beschikbare auto's. `Nee verkopen` kan worden voorkomen door over voldoende beschikbare auto te kunnen beschikken
+\end{itemize}
+Zoals reeds is vermeld, indien een bestelde auto niet kan worden gestuurd naar de klant, zal dit op  uniforme wijze moeten worden gecommuniceerd naar de klant
 \subsubsection{Producteigenschap Maintainability}
 Het project zal via een agile aanpak worden uitgevoerd. Bedrijven zoals GroeneWielen zitten niet stil en zijn waarschijnlijk ook bezig om hun systeem te verbeteren. Afhankelijk van de producten die de concurrentie op de markt zet, moet Call-a-Car om kunnen gaan met veranderingen in het ontwikkelde product. Om goed te kunnen anticiperen op deze veranderingen is het nodig dat de code op zulk een manier is ontwikkeld, dat het makkelijk is om wijzigingen door te voeren: de architectuur moet flexibel zijn en design patterns moeten worden toegepast zodat toekomstige ontwikkelaars makkelijk hun weg kunnen vinden indien zij bij het project betrokken worden. In een tijd waar goede ontwikkelaars moeilijk te vinden zijn, is dit van groot belang. De volgende zaken worden daarom benadrukt om aan de criteria's ``Modularity``, ``Reusability``, ``Modifiability`` en ``Testability`` te voldoen:
 \begin{itemize}
@@ -496,11 +516,11 @@ Wij zullen voor de beschrijving van de architectuur gebruik maken van Kruchtens 
 \item Ontwikkelingsperspectief: een perspectief waarin de relaties tussen de verschillende software componenten van het systeem getoond worden. De ontwikkelaars gebruiken dit perspectief voor het ontwikkelen van de software. Hiervoor worden de UML component en package diagrammen gebruikt.
 \item Proces perspectief: dit perspectief toont het dynamische gedrag van het systeem. Hierbij zijn een aantal non-functionele requirements betrokken. Met behulp van de UML activity diagram wordt dit perspectief afgebeeld. Dit perspectief is bestemd voor de systeemontwerpers en de systeemintegrators.
 \item Fysieke perspectief: dit perspectief beeldt de software componenten af op fysieke componenten (zoals computers) en de relaties tussen deze fysieke componenten. In dit perspectief zijn voornamelijk de non-functionele requirements zoals scalability zijn van belang. De UML deployment diagram wordt gebruikt om dit perspectief af te beelden. De stakeholder is de systeemontwerper.
-\item De overkoepelende perspectief zijn de scenario's. Vooral voor de gebruikers en voor de ontwikkelaars zijn de scenario's een hulp voor een beter begrip van de relatie tussen de functionele requirements en het systeem. De UML use case diagram wordt gebruikt om de relaties tussen de scenario's af te beelden.
+\item Het overkoepelende perspectief zijn de scenario's. Vooral voor de gebruikers en voor de ontwikkelaars zijn de scenario's een hulp voor een beter begrip van de relatie tussen de functionele requirements en het systeem. De UML use case diagram wordt gebruikt om de relaties tussen de scenario's af te beelden.
 \end{itemize} 
 \begin{figure}
-	\centering
-	\includegraphics{Kruchten.png}
+  \centering
+  \includegraphics{Kruchten.png}
     \caption{"4+1" model van Kruchten}
     \label{fig:kruchten}
 \end{figure}
@@ -509,38 +529,64 @@ Met behulp van deze perspectieven wordt de architectuur van het systeem vanuit v
 \subsection{Architectural vision}
 \label{secsub:architectural vision}
 %< Geef  hier de algemene architectuur principes waar u zich aan zult houden, mogelijk door te verwijzen naar gebruikte architectuurpatronen of geselecteerde tactieken.>
-Voor de architectuur van het systeem zal zoveel mogelijk gebruikt gemaakt worden van bestaande en beproefde principes. Dit heeft een aantal voordelen. De architectuur is zo eenvoudig te begrijpen. De ontwikkelaars zullen hierdoor de applicatie sneller kunnen bouwen. Bovendien kan het systeem zonder te veel moeite aan andere personen overgedragen worden. Dit komt dus de criteria `learnability` ten goede.
+Voor de architectuur van het systeem zal zoveel mogelijk gebruikt gemaakt worden van bestaande en beproefde principes. Dit heeft een aantal voordelen. De architectuur is zo eenvoudig te begrijpen. De ontwikkelaars zullen hierdoor de applicatie sneller kunnen bouwen. Bovendien kan het systeem zonder veel moeite aan andere personen overgedragen worden. Dit laatste komt de criteria `learnability` ten goede.
 \newline 
 \newline
-In figuur \ref{fig:boundaries} op pagina \pageref{fig:boundaries} worden de boundaries van het systeem beschreven middels een diagram. In dit diagram worden tevens de architectuurpatronen aangeduid met AP[x], waarbij x het specifieke architectuurpatroon aangeeft. De architectuurpatronen die worden toegepast bij de communicatie van de verschillende deelsystemen worden hieronder beschreven:\newline
-\newline
+\begin{figure}
+  \centering
+  \includegraphics{arch_patterns.png}
+    \caption{Architectuurpatronen}
+    \label{fig:arch_patterns}
+\end{figure}
+In figuur \ref{fig:arch_patterns} worden de architectuurpatronen benoemd. De architectuurpatronen die worden toegepast bij de communicatie van de verschillende deelsystemen worden hieronder beschreven:\newline
 \begin{itemize}
 \item Event-bus architectuurpatroon. Het Event-bus architectuurpatroon zal worden toegepast bij de communicatie tussen de volgende systemen:
-	\begin{itemize}
-	\item AP1: CaC App en CaC Services. Het Event-bus architectuurpatroon zorgt voor een ontkoppeling tussen twee communicerende systemen en dit is precies een requirement die van toepassing is tussen de communicatie van de Cac App en de CaC Services: Het niet beschikbaar zijn van bepaalde onderdelen van de CaC Services mag geen invloed hebben op het gebruik van de CaC App, de gebruiker moet ook in deze situatie in staat worden gesteld om een bestelling te plaatsen. Ook het terugrapporteren van de bevestiging van de bestelling dien asynchroon te gebeuren: Het kan namelijk zijn dat de telefoon van de klant tijdelijk het signaal verliest. Er zal gebruik worden gemaakt van een `Two-way` Event-bus, waarbij een `bestelling queue` en een `bevestiging queue` worden gebruikt
-    \item AP4: De zelfrijdende auto's zullen aanvragen moeten doen naar het Parking Facilities Systeem om een parkeerplaats te reserveren. Deze communicatie zal net als bij AP1 worden gedaan met onbetrouwbare GSM-verbindingen, waarbij het belangrijk is om deze twee systemen te ontkoppelen. Een Event-bus patroon is dus gerechtvaardigd, waarbij er ook een Two-way Event-bus principe zal worden toegepast m.b.v. twee queues
-	\item AP6: CaC Services en ANCS. Ook de communicatie tussen CaC Services en het `Auto Navigatie en Controle Systeem` zal berusten op het Event-bus architectuurpatroon, aangezien de communicatie tussen deze twee deelsystemen ook ontkoppeld dient te worden: Het niet beschikbaar zijn van een bepaalde auto (omdat deze zich bijvoorbeeld in een tunnel bevindt), mag niet leiden tot het verloren gaan van de aanvraag van het CaC Services naar het ANCS van de auto. Ook hier zullen er twee queues worden gebruikt, één voor de aanvraag van de positie en beschikbaarheid van de autos en één voor de bevestiging.
+  \begin{itemize}
+  \item CaC App en CaC Services. Het Event-bus architectuurpatroon zorgt voor een ontkoppeling tussen twee communicerende systemen en dit is precies een requirement die van toepassing is tussen de communicatie van de Cac App en de CaC Services: Het niet beschikbaar zijn van bepaalde onderdelen van de CaC Services mag geen invloed hebben op het gebruik van de CaC App, de gebruiker moet ook in deze situatie in staat worden gesteld om een bestelling te plaatsen. Ook het terugrapporteren van de bevestiging van de bestelling dien asynchroon te gebeuren: Het kan namelijk zijn dat de telefoon van de klant tijdelijk het signaal verliest. Er zal gebruik worden gemaakt van een `Two-way` Event-bus, waarbij een `bestelling queue` en een `bevestiging queue` worden gebruikt
+    \item De zelfrijdende auto's zullen aanvragen moeten doen naar het Parking Facilities Systeem om een parkeerplaats te reserveren. Deze communicatie zal worden gedaan met onbetrouwbare GSM-verbindingen, waarbij het belangrijk is om deze twee systemen te ontkoppelen. Een Event-bus patroon is dus gerechtvaardigd, waarbij er ook een Two-way Event-bus principe zal worden toegepast m.b.v. twee queues
+  \item CaC Services en \glspl{}. Ook de communicatie tussen CaC Services en het `Auto Navigatie en Controle Systeem` zal berusten op het Event-bus architectuurpatroon, aangezien de communicatie tussen deze twee deelsystemen ook ontkoppeld dient te worden: Het niet beschikbaar zijn van een bepaalde auto (omdat deze zich bijvoorbeeld in een tunnel bevindt), mag niet leiden tot het verloren gaan van de aanvraag van het CaC Services naar het ANCS van de auto. Ook hier zullen er twee queues worden gebruikt, één voor de aanvraag van de positie en beschikbaarheid van de autos en één voor de bevestiging
     \end{itemize}
-\item Het Client-Server architectuurpatroon zal in de volgende gevallen worden toegepast:
-	\begin{itemize}
-    	\item AP2: Het deelsysteem CaC Admin zal gegevens opvragen van de CaC Services. Laatstgenoemde services zullen nooit het initiatief nemen en in dit geval is een Client-Server patroon dus voldoende, waar een stateful server zal worden gebruikt
-	\item AP3: Het deelsysteem `Parking Facilities Systeem` zal het initiatief nemen voor het versturen van gegevens naar het deelsysteem CaC Services: Het PFS weet namelijk wanneer gegevens verstuurt moeten worden, indien de auto de garage binnenkomt, wanneer de laadactie (elektriciteitsverbruik) wordt geïnitieerd en beëindigd en wanneer de auto de garage verlaat. Er is dus geen reden voor het CaC Services om een actie te initieren: Een Client-Server patroon waarbij het PFS de client zal zijn en CaC Services te server, is dus voldoende. Ook hier zal een stateful server worden toegepast
-	\item AP5: CaC Services zal periodiek een aanvraag doen naar het Bank Systeem om overzichten te verkrijgen van betalingen die zijn gedaan door de klanten. Hier zal ook een stateful-server binnen het banksysteem worden gebruikt via een Client-Server patroon
+
+De invloed van het Event-bus architectuurpatroon op de gestelde producteigenschappen zijn de volgende:
+  \begin{itemize}
+      \item Functional suitability - De functional requirements zullen vervuld moeten worden. Wat belangrijk zal zijn is de mate waarin deze vervuld kunnen worden (Functional completeness en correctness). Het Event-bus architectuurpatroon is uitermate geschikt in situaties waar verschillende systemen met elkaar gekoppeld moeten worden waar communicatie plaatsvindt over onbetrouwbare kanalen. Dit is het geval in deze use-case, aangezien zowel de communicatie tussen CaC App en CaC Services, tussen PFS en ANCS en tussen ANCS en CaC Services zal verlopen via het onbetrouwbare mobiele 4G netwerk, waarbij communicatie is essentie niet gegarandeerd is
+        \item Usability - Er is geen directe relatie met het Event-bus archirectuurpatroon. Echter, de gebruiker wil een gebruikersvriendelijke ervaring. Dit betekent dat de gebruiker direct feedback wil hebben nadat bijvoorbeeld een auto is besteld. Het Event-bus archirectuurpatroon biedt deze functionaliteit, aangezien de bestelling en de bevestiging van elkaar worden losgekoppeld. Binnen drie seconden wordt er naar de gebruiker gecommuniceerd of er een auto beschikbaar is, en indien het geval, wanneer de auto zal arriveren. 
+        \item Performance-efficiency/Scalability - Er zal een Event-bus technologie moeten worden gekozen, waarbij het mogelijk is om dynamisch processen toe te voegen die queue afhandeling plegen, aangezien bij toename van het aantal klanten en/of het toevoegen van meer auto's in de toekomst, er contentie zou kunnen ontstaan op deze processen en/of queue's.            \item Security - Er zal een Event-bus technologie moeten worden gekozen die het mogelijk maakt om events via SSL te versturen. Tevens moet bij de communicatie tussen de verschillende systemen, er voor worden gezorgd dat er geen directe persoonsgegevens worden uitgewisseld, maar dat er gebruik gemaakt wordt van kunstmatige sleutels die als referentie kunnen worden gebruikt bij latere persoonsidentificatie
+        \item Availability - De gekozen Event-bus implementatie zal een robuuste `Failover` functionaliteit moeten hebben. `Single-point-of-failure` zal ten alle tijden moeten worden vermeden. Dit betekent dat er tenminste één extra Event-bus server proces actief moet zijn 
     \end{itemize}
-\item AP4
-\item AP5
-\item AP6
+    
+\item Het REST architectuurpatroon zal in de volgende gevallen worden toegepast:
+  \begin{itemize}
+      \item  Het deelsysteem CaC Admin zal gegevens opvragen van de CaC Services. Laatstgenoemde services zullen nooit het initiatief nemen en in dit geval zal een REST architectuurpatroon worden toegepast. Het deelsysteem CaC Admin fungeert dus als een REST client
+  \item Het deelsysteem `Parking Facilities Systeem` zal het initiatief nemen voor het versturen van gegevens naar het deelsysteem CaC Services: Het PFS weet namelijk wanneer gegevens verstuurt moeten worden, indien de auto de garage binnenkomt, wanneer de laadactie (elektriciteitsverbruik) wordt geïnitieerd en beëindigd en wanneer de auto de garage verlaat. Er is dus geen reden voor het CaC Services om een actie te initiëren: Ook hier het REST patroon worden toegepast
+  \item CaC Services zal periodiek een aanvraag doen naar het Bank Systeem om overzichten te verkrijgen van betalingen die zijn gedaan door de klanten. Het Bank systeem biedt een set van REST web-services (aanname) aan. Bepaalde componenten binnen CaC Services zullen dus in deze situatie als een REST client optreden
+  \item Verschillende business services binnen CaC Services zullen worden `gewrapped` in REST (Server) web-services. De betreffende business services zullen o.a. de volgende verantwoordelijkheden hebben:
+    \begin{itemize}
+      \item Het opslaan van gegevens die worden verzameld van het Parking Facilities systeem
+      \item Het berekenen van de meest ideale auto bij de bestelling van een klant
+      \item Het verzamelen van informatie betreffende de generatie van   maandelijkse overzichten voor het CaC Admin Systeem
+      \end{itemize}
+  De REST clients in deze gevallen zullen dus de componenten zijn die de REST web-services aanroepen:
+    \begin{itemize}  
+      \item Controller-componenten (MVC Context) van de CaC App en het CaC Admin systeem
+        \item Event-bus server componenten, die zich bezighouden met het ontvangen en verzenden van events, zullen de REST web-services aanroepen voor het uitvoeren van business logica, eventueel via een tussenlaag om een ontkoppeling tussen de Event-bus server componenten en de REST architectuur tot stand te brengen
+      \end{itemize}
+    \end{itemize}
+    
+De invloed van het REST architectuurpatroon op de gestelde producteigenschappen zijn de volgende:
+  \begin{itemize}
+    \item Security - Het gebruik van het REST patroon betekent per definitie dat state management zal worden uitgevoerd door de REST client. Er moet dus voor worden gezorgd dat er wordt gecommuniceerd over een beveiligde connectie middels SSL. Zoals is reeds aangegeven bij het vorige architectuurpatroon, mogen er geen persoonsgegevens worden gecommuniceerd worden tussen de REST client en de REST web-service, maar dient er gebruik gemaakt te worden van kunstmatige identifiers. De REST web-services zullen via business services communiceren met een database. Het is van belang dat gebruikersgevoelige informatie geencrypt wordt opge
+    \item Performance-efficiency/Scalability - Er zal een Application Server moeten worden gekozen die scaling `out-of-the-box` ondersteunt: Er moeten dynamisch extra server processen kunnen worden opgestart indien dit nodig zou zijn
+    \item Availability - Net zoals bij de bespreking van het Event-bus architectuurpatroon, zal de gekozen Application Server, waar de REST web-services draaien, de mogelijkheid moeten hebben tot de configuratie van een hot-standby functionaliteit, zodat in het geval van een fatale fout in de server, de andere server die request/response afhandeling kan overnemen
+    \end{itemize}
+    
+\item Het MVC (Model-view-controller) patroon zal worden toegepast in de volgende twee situaties:
+  \begin{itemize}
+      \item De CaC app is een interactieve applicatie, die twee hoofdfunctionaliteiten zal bieden. Enerzijds stelt het de gebruiker in staat om een auto te bestellen. Anderzijds zal het ook een beperkte subset overzichten hebben die ook door het CaC Admin Systeem zal worden aangeboden. Er is dus sprake van een verschillende soorten look-and-feels (CaC Admin Systeem en CaC App). In dit geval biedt een MVC patroon dus een uitkomst. Overigens is het MVC patroon het meeste gangbare patroon als het gaat om interactieve applicaties
+        \item Het CaC Admin Systeem zal ook een interactieve Web-applicatie zijn. Het is logisch dat hierbij ook het MVC patroon zal worden toegepast
+    \end{itemize}
+Er zijn geen uitgesproken negatieve invloeden van het MVC architectuurpatroon op de gestelde producteigenschappen.
 \end{itemize} 
-
-
-security: beter stageful!
-
-De twee apps, CaC App en CaC Admin Systeem, vragen bij de CaC services gegevens op. Hiervoor zal de client-server pattern gebruikt worden. De CaC services is hierbij de server en de apps zijn de client. Voor security en privacy zal de verbinding via https gaan. 
-Voor de Cac Admin is de Cac services een stateful server, zodat een snelle interactie voor de beheerder gerealiseerd kan worden. Voor de gebruiker van de Cac App is dat niet nodig. Deze gebruiker is niet heel vaak en lang actief; voornamelijk voor het bestellen van een auto. Daarom zal de CaC services als een stateless server dienen. \newline
-De apps zullen ontworpen worden volgens de Model-View-Controller pattern, aangezien de nadruk bij de applicatie om de user-interface gaat. Dit is anno 2018 een standaard en veel ontwikkeltools bieden hier functionaliteit voor.\newline
-\newline
-De CaC service stuurt de voertuigen aan. Hiervoor is het noodzakelijk dat de CaC service de GPS coördinaten en andere parameters van het voertuig kan opvragen. Bovendien moet de CaC Services commando's naar het voertuig kunnen sturen, zoals het adres of parkeerplaats waarheen het voertuig heen moet rijden. Het voertuig moet zelf ook het initiatief kunnen nemen tot communicatie met de CaC services. Daarom zal de Peer-to-peer pattern worden toegepast tussen het voertuig en de CaC services. \newline 
-\newline 
 Zoals eerder beschreven zijn een aantal kwaliteitsattributen van dit project van belang. De belangrijkste zijn security (\ref{subsubsec:security}) en performance (\ref{subsubsec:performance_efficiency}). Met behulp van tactieken kunnen maatregelen genomen worden om de kwaliteitsattributen beter in de software te implementeren \cite{HARRISON20101735}. De tactieken voor de kwaliteitsattribuut security zijn\cite{BassSoftwareArchitecture2012}:
 \begin{itemize}
 \item Authenticate users: controleren of gebruikers zijn wie zij beweren te zijn.
@@ -553,7 +599,7 @@ De volgende tactieken worden toegepast voor het realiseren van de kwaliteitsattr
 \item Maintain multiple copies of either data or computations: waar mogelijk wordt caching toegepast, zodat minder communicatie naar b.v. een database noodzakelijk is.
 \item Increase available resources: snellere en betere processoren zorgt voor snellere reactie tijden. Uitgezocht moet worden in wat binnen het budget mogelijk is.
 \end{itemize} 
-De voorkeur gaat uit om gebruik te maken van een cloud oplossing. De teamleden hoeven dan hun tijd niet te besteden aan het inrichten en beheer van het systeem. Uitgezocht moet worden of dit inderdaad goedkoper is en dat aan Europese en Nederlandse wetgeving voldaan kan worden omtrent het opslaan van persoonsgegevens.\newline
+De voorkeur gaat uit om gebruik te maken van een cloud oplossing. De teamleden hoeven dan hun tijd niet te besteden aan het inrichten en beheer van het systeem. Uitgezocht moet worden of dit inderdaad goedkoper is en dat aan Europese en Nederlandse wetgeving voldaan kan worden omtrent het opslaan van persoonsgegevens. Aangezien privacy zeer belangrijk is, zal een partij gekozen worden die hierin ervaring heeft.\newline
 
 \subsection{Viewpoint or perspective x}
 %<geef per viewpoint aan: 
@@ -570,8 +616,15 @@ De voorkeur gaat uit om gebruik te maken van een cloud oplossing. De teamleden h
 %<Beschrijf hier wat de bedoeling is van het doorlopen van scenario’s>
 \todo{Ivo - scenario 1: bestellen auto vanuit de gebruiker}
 \todo{Marco - scenario 2: maandelijkse betalingen}
-
-\subsection{Scenario 1}
+\subsection{Scenario Bestel een zelfrijdende auto}
+Dit scenario identificeert op zeer hoog niveau de verschillende objecten die een rol spelen bij de bestelling van een auto. Ook wordt weergegeven hoe de objecten met elkaar communiceren. 
+\newpage
+\begin{figure}
+  \centering
+  \includegraphics{scenario_order_car.png}
+    \caption{Scenario: Bestel auto}
+    \label{fig:scenario_bestel_auto}
+\end{figure}
 
 %<Beschrijf:
 %- een scenario of use-case
@@ -579,7 +632,41 @@ De voorkeur gaat uit om gebruik te maken van een cloud oplossing. De teamleden h
 %- de kwaliteitseisen die bij het doorlopen van het scenario bekeken kunnen worden
 %- de analyse waarom de architectuur voldoet aan die kwaliteitseisen>
 
-\subsection{Scenario }
+Onderstaande punten dienen als toelichting bij het diagram:
+\begin{itemize}
+  \item In stap 2 wordt een message op de OrderCarRequest queue gezet. Dit betekent dat zodra het bericht is gepersisteerd, er een ontkoppeling ontstaat tussen de CaC App en de CaC Services. Een eventuele tijdelijke `hick up` in de GSM-verbinding heeft geen invloed op het verdere verloop van het scenario
+    \item In stap 3 wordt door een event het object orderRequestManager op de hoogte gebracht van het feit dat er een verzoek tot bestelling van een auto is gedaan. Het object zal dit verzoekobject ontvangen. Nadat dit object een verzoek tot het zoeken van een beschikbare auto op een queue heeft gezet, ontstaat er een verdere ontkoppeling. Het systeem CaC Services zou eventueel problemen kunnen ondervinden (stroomonderbreking b.v.) zonder dat dit het scenario op een negatieve manier zal beïnvloeden
+    \item Stap 4 zorgt ervoor dat het verzoek wordt vastgelegd in een database via een REST-webservice aanroep. Deze informatie is later nodig omdat het REST-protocol stateless is, en betreffende informatie dus moet worden vastgelegd. Dit kan niet door het OrderRequestManager zelf worden gedaan aangezien dit object alleen in het geheugen aanwezig is
+    \item Stap 5 zorgt ervoor dat er een object op de SearchCarRequest queue wordt geplaatst
+    \item In stap 6 zal elke zelfrijdende auto een bericht ontvangen met het verzoek om te rapporteren omtrent de beschikbaarheid van de auto en eventueel de GPS-coördinaten waar de auto zich bevindt. Deze informatie wordt op een queue geplaatst
+    \item Elke zelfrijdende zal een bericht sturen naar de SearchCarResponseQueue, waarbij dit object de GPS-coördinaten en de beschikbaarheid van de auto zal bevatten (stap 7) 
+    \item In stap 8 wordt door het object SearchAvailableCarManager de verschillende antwoorden ontvangen van de zelfrijdende auto's
+    \item Vervolgens wordt het verzoek van klant opgeroepen uit de database via de REST web-services m.b.v het `customer id` van de klant (stap 9)
+    \item In stap 10 wordt de meest ideale beschikbare zelfrijdende auto bepaald m.b.v. een korste-afstand algoritme. 
+    \item Stap 11 behelst de opslag van deze informatie om later een kostprijs te kunnen berekenen
+    \item Er wordt vervolgens in stap 12 een bericht op de OrderCarConfirm queue gezet
+    \item Stap 13 verduidelijkt dat de CaC App luistert naar deze queue en de informatie betreffende geschatte aankomsttijd zal worden gecommuniceerd naar de klant (stap 14)
+    
+\end{itemize}
+De stakeholders die belang hebben bij dit scenario zijn de volgende:
+\begin{itemize}
+  \item De klant - Hier wordt niet de uiteindelijke eindklant mee bedoelt, maar meer een persoon die deze eindklanten representeert en die zeer goed op de hoogte is van de eisen en wensen van de toekomstige klanten, zijnde Alex Aanvoerder
+    \item De autofabrikant - De autofabrikant levert zowel de zelfrijdende auto's als de software, aangegeven door de afkorting ANCS (Auto Navigatie en Controle Systeem). Zij zullen namelijk deze software bouwen en deze software moet de interface gebruiken die door CaC Services wordt geleverd
+    \item Bits for Freedom - Bits for Freedom is geïnteresseerd in hoe er wordt omgegaan met de privacy van de klanten en het scenario kan als leidraad dienen bij de bespreking van de security aspecten van de systemen
+\end{itemize}
+
+De volgende kwaliteitseisen kunnen worden getoetst door middel van het doorlopen van het scenario:
+\begin{itemize}
+  \item Functional suitability - Het scenario geeft duidelijk de functionaliteit (Functional completeness) van het scenario aan en tevens de scheiding en ontkoppeling  tussen de verschillende systemen en kan dienen om foutafhandelingsmechanismen toe te lichten (Functional correcteness)
+    \item Security - Zoals reeds is toegelicht, kan de scenariobeschrijving worden gebruikt om als leidraad te gebruiken bij de toelichting van securityaspecten:
+    \begin{itemize}
+      \item Het is duidelijk wat de communicatiekanalen zijn en dus waar informatiestromen aanwezig zijn tussen de deelsystemen en dus ook waar eventuele problemen zouden liggen
+      \item Met enige toelichting kan duidelijk worden gemaakt dat er geen persoonsgegevens tussen de systemen worden gecommuniceerd, maar gebruik wordt gemaakt van kunstmatige sleutels (b.v. het veld customerId in het diagram)
+        \item Er kan worden toegelicht dat er oplossing worden gezocht om de gegevens versleuteld te versturen via een SSL-verbinding
+    \end{itemize}
+    \item Availability - Dit valt niet direct uit het scenario af te leiden, maar uit het diagram valt af te leiden welke de kritische componenten zijn en dubbel uitgevoerd moeten worden om hoge beschikbaarheid te bewerkstelligen. Er wordt verwezen naar het component diagram binnen de Deployment Viewpoint (later)
+\end{itemize}
+\subsection{Scenario 2}
 
 \section{Glossary}
 \label{sec:glossary}
